@@ -12,8 +12,10 @@
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
-    "pg": "^6.1.0",
-    "hashids": "^1.1.1"
+    "hashids": "^1.1.1",
+    "jquery": "^3.1.0",
+    "normalize.css": "^4.2.0",
+    "pg": "^6.1.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.4.1",

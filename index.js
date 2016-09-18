@@ -13,8 +13,13 @@ const app = express();
 // bodyParser Setup
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use( bodyParser.json() );
 
+// Let's add some dependency folders!!
+app.use( express.static( 'node_modules/jquery/dist' ) );
+app.use( express.static( 'node_modules/normalize.css' ) );
+app.use( express.static( 'lib/jqui' ) );
+app.use( express.static( 'public') );
 
 // Bespoke Module for handling errors ( especially API errors )
 const tossErr = require( './lib/errors' );
@@ -23,7 +28,9 @@ const tossErr = require( './lib/errors' );
 // let's hash all the numerical IDs going to the client
 // and decode them when they come back as parameters later
 const Hashids = require( 'hashids' );
+//const listhash = new Hashids( 'czv2RUIoo8JbRgvwGfYDyW6cCkqx3hcgpo6wUDWvXqd6nkTAKuEqF7onoytDnmwqMy4ICbyHUiB3Y8y9gmRufqXRS86tp1BP66nYzjUIjjNHj9S9l5AyvT6XLH5lzENFKr7covu98YCAySE0sKN2dpUZYloidU99aT9WtUGIt7o2zCexjb0pzrEhh7qSYgFM5ybhXLTLxk2HUMbNFWsncuaCEW9qqJWf59jHZYjDcvwRQ2L1UCmNk6dlCNEQXK0AftQZF3MVoK53KG2s0uTP10to8RGb8ZxgP2AXNRL6BWWMVGKI7Oy8kdSMFDusz08iVXWrsQlPZ52mrjeAwvhD8Wko28GZEWwsgBaUWWkzE8wy7OqY5L7jJJxNWJQWwUs6bcv0n6hfj80YBQMu', 12 );
 const listhash = new Hashids( 'list', 12 );
+//const itemhash = new Hashids( 'VJp8kAALaP1atPNYHgycf95zuuPzveZycE5fIopgwqjF31anDYYgnD8vaCCqFoJraAjdwANeZA06poJ4R3QOCGx2YKDxdrYLWQ8qUEqOqXvDPoNUYBEvqnVqasKyQDea1y4cmL2mIwp9uNxx9PdOUAVmCsJHmMBiNrDfCTGNHshLW09ReN1sGtHXQeCvrDkeEoGuIie1aoBnHTDnaoeYNTSQdOc6WrsyzVrxwf074FBA3KcLZGyWwiL7IVGcF5ay6qYvYHe2o1lm0a3WGRY3I0B37tZDOGglt2ArA8MdVNihEF7osOtwDUMLMpfxzDOYya5gjwvs7j2qN1KapQ0A56geMjqxhYOGWagGgFkE0IewjXzIWEdE19IW6KnZe1C4jBgzAkW9KkrzW34Z', 24 );
 const itemhash = new Hashids( 'item', 24 );
 
 // Bespoke module for multi-level hashing `id` fields in objects ( inquire inside for details )
@@ -79,7 +86,7 @@ list.route( '/' )
 
 	console.log( "GET /list" );
 
-	var sql = "SELECT json_agg( json_build_object( 'id', my_lists.id, 'name', my_lists.name, 'items', ( SELECT  json_agg( json_build_object(  'id', my_items.id, 'content', my_items.content, 'status', my_items.status, 'complete', my_items.complete ) ) FROM my_items WHERE list_id=my_lists.id ) ) ) AS lists FROM my_lists WHERE status=1;"
+	var sql = "SELECT json_agg( json_build_object( 'id', my_lists.id, 'name', my_lists.name, 'items', ( SELECT  json_agg( json_build_object(  'id', my_items.id, 'content', my_items.content, 'status', my_items.status, 'complete', my_items.complete ) ) FROM my_items WHERE list_id=my_lists.id AND status=1 ) ) ) AS lists FROM my_lists WHERE status=1;";
 
 	pool.query( sql, ( err, result ) => {
 
@@ -110,7 +117,9 @@ list.route( '/' )
 
 		if( err ) tossErr( err, "POST /list failed." );
 
-		res.redirect( '/list' );
+		var rows = hashit( result.rows );
+
+		res.send( rows );
 
 	} );
 
@@ -181,6 +190,12 @@ list.route( '/:id/archive')
 	pool.query( sql, values, ( err, result ) => {
 
 		if( err ) tossErr( err, "POST /list failed." );
+
+		query.on( 'end', function() {
+
+			res.redirect( '/list' );
+
+		} );
 
 		res.redirect( '/list' );
 
@@ -285,8 +300,8 @@ list.route( '/:id' )
 
 	console.log( "GET /list/:id", req.hashids.list );
 
-	var sql = "SELECT json_agg( json_build_object( 'id', my_lists.id, 'name', my_lists.name, 'items', ( SELECT  json_agg( json_build_object(  'id', my_items.id, 'content', my_items.content, 'status', my_items.status, 'pinned' ) ) FROM my_items WHERE list_id=my_lists.id ) ) ) AS lists FROM my_lists WHERE id=$1;"
-
+	var sql = "SELECT json_agg( json_build_object( 'id', my_lists.id, 'name', my_lists.name, 'items', ( SELECT  json_agg( json_build_object(  'id', my_items.id, 'content', my_items.content, 'status', my_items.status, 'complete', my_items.complete ) ) FROM my_items WHERE list_id=my_lists.id AND status=1 ) ) ) AS lists FROM my_lists WHERE id=$1 AND status=1;";
+	
 	var values = [ req.hashids.list ];
 
 	pool.query( sql, values, ( err, result ) => {
@@ -309,7 +324,7 @@ list.route( '/:id' )
 
 	console.log( "PUT /list/:id", req.hashids.list );
 
-	var sql = "UPDATE list SET name=$2 WHERE id=$1";
+	var sql = "UPDATE list SET name=$2 WHERE id=$1 RETURNING id, name";
 
 	var values = [ req.hashids.list, req.body.name ];
 
@@ -333,20 +348,19 @@ list.route( '/:id' )
 items.route( '/' )
 // POST /list/items
 // Adds an item. You can pass content. That's all.
-// Redirects to GET /list
 .post( ( req, res ) => {
 
 	console.log( "POST /items" );
 
-	var sql = "INSERT INTO item ( list_id, content, last_updated ) VALUES ( $1, $2, NOW() );";
+	var sql = "INSERT INTO item ( list_id, content, last_updated ) VALUES ( $1, $2, NOW() ) RETURNING id, list_id, content;";
 
-	var values = [ req.body.id, req.body.content ];
+	var values = [ req.hashids.list, req.body.content ];
 
 	pool.query( sql, values, ( err, result ) => {
 
 		if( err ) tossErr( err, "POST /list/:id/items failed." );
 
-		res.redirect( '/list' );
+		res.send( result.rows );
 
 	} );
 
@@ -357,7 +371,7 @@ items.route( '/' )
 // Redirects to GET /list
 .put( ( req, res ) => {
 
-	var sql = "UPDATE item SET content=$2, last_updated=NOW() WHERE id=$1";
+	var sql = "UPDATE item SET content=$2, last_updated=NOW() WHERE id=$1 RETURNING id, content, list_id";
 
 	var values = [ Number( itemhash.decode( req.body.id ) ), req.body.content ];
 
@@ -365,7 +379,7 @@ items.route( '/' )
 
 		if( err ) tossErr( err, "POST /list/:id/items failed." );
 
-		res.redirect( '/list' );
+		res.send( result.rows );
 
 	} );
 
@@ -380,9 +394,9 @@ items.route( '/complete' )
 // Redirects to GET /list
 .put( ( req, res ) => {
 
-	console.log( "PUT /items/complete" );
+	console.log( "PUT /items/complete", req.body );
 
-	var sql = "UPDATE item SET complete=true WHERE id=$1";
+	var sql = "UPDATE item SET complete=true WHERE id=$1 RETURNING *";
 
 	var values = [ Number( itemhash.decode( req.body.id ) ) ];
 
@@ -390,7 +404,7 @@ items.route( '/complete' )
 
 		if( err ) tossErr( err, "PUT /list/:id/items/complete failed." );
 
-		res.redirect( '/list' );
+		res.send( result.rows );
 
 	} );
 
@@ -519,7 +533,7 @@ items.route( '/trash' )
 
 	console.log( "PUT /items/trash" );
 
-	var sql = "UPDATE item SET status=3 WHERE id=$1";
+	var sql = "UPDATE item SET status=3, last_updated=NOW() WHERE id=$1 RETURNING id, content, status";
 
 	var values = [ Number( itemhash.decode( req.body.id ) ) ];
 
@@ -527,7 +541,7 @@ items.route( '/trash' )
 
 		if( err ) tossErr( err, "PUT /list/:id/items/trash failed." );
 
-		res.redirect( '/list' );
+		res.send( result.rows );
 
 	} );
 
