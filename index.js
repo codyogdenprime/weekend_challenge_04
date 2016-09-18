@@ -360,6 +360,8 @@ items.route( '/' )
 
 		if( err ) tossErr( err, "POST /list/:id/items failed." );
 
+		result.rows[0].id = itemhash.encode( result.rows[0].id )
+
 		res.send( result.rows );
 
 	} );

@@ -14,7 +14,7 @@ $(document).ready( function() {
 
 	$( '.input-new-list' ).on( 'enterKey', addList );
 
-	$('.input-new-list').keyup(function(e){
+	$( '.input-new-list' ).on( 'keyup', function(e){
 	    if(e.keyCode == 13)
 	    {
 	        $(this).trigger("enterKey");

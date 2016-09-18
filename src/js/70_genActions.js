@@ -44,7 +44,7 @@ var genActions = function() {
 
 	div.append( [ done, archive, trash ] );
 
-	input.parent().append( div );
+	div.insertAfter( input );
 
 	input.on( 'mouseleave', function() {
 

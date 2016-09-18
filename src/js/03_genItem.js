@@ -24,7 +24,7 @@ var genItem = function( items ) {
 
 			}
 
-			var liInput = $('<input />', { class: 'item-input', data: item } ).attr( 'type', 'text' ).val( item.content ).attr( 'disabled', 'true' );
+			var liInput = $('<input />', { class: 'item-input', data: item, id: item.id } ).attr( 'type', 'text' ).val( item.content ).attr( 'disabled', 'true' );
 
 			li.append( liInput );
 

@@ -19,11 +19,21 @@ var addItem = function() {
 
 			console.log( 'Added Item!', data );
 
+			var imgurl = input.val();
+
 			input.val( '' );
 
 			$('#' + listId).append( genItem( data ) );
 
-			refreshList( listId );
+			//refreshList( listId );
+			
+			imageExists( imgurl, function( isImage ) {
+
+				var img = $('<img />', { class: 'preview-image' }).attr( 'src', imgurl );
+
+				img.insertAfter( '#' + data[0].id );
+
+			});
 
 		}
 	});

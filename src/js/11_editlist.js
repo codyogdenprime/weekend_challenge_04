@@ -2,6 +2,8 @@ var editList = function() {
 
 	console.log( "This data:", $( this ).data() );
 
+	$( this ).blur();
+
 	var listId = $( this ).data('id');
 
 	var ajUrl = String( '/list/' + listId );

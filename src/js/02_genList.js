@@ -36,6 +36,8 @@ var genList = function ( data ) {
 
 	for( var i = 0; i < data.length; i++ ) {
 
+		var listContainer = $( '<div />', { class: 'list-container' });
+
 		var listDiv = $( '<div />', { class: 'list', data: data[i]});
 
 		var listTitle = $( '<div />', { class: 'list-title' });
@@ -52,6 +54,16 @@ var genList = function ( data ) {
 
 		var newItemInput = $( '<input />', { class: 'new-item-input', data: data[i] }).attr( 'placeholder', 'Add new item...' );
 
+		var imgurl = data[i].content;
+
+		imageExists( imgurl, function( isImage ) {
+
+			var img = $('<img />', { class: 'preview-image' }).attr( 'src', imgurl );
+
+			img.insertAfter( newItemInput );
+
+		});
+
 		listTitle.append( [ listTitleInput, listMenu ] );
 
 		listDiv.append( listTitle );
@@ -64,10 +76,12 @@ var genList = function ( data ) {
 
 		listDiv.append( itemDiv );
 
-		lists = lists.add( listDiv );
+		listContainer.append( listDiv );
+
+		lists = lists.add( listContainer );
 
 	}
 
-	lists.insertBefore( '.add-list' );
+	lists.insertBefore( '.list-container.add-list' );
 
 };

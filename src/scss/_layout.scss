@@ -1,0 +1,25 @@
+body {
+  display: flex;
+  flex-flow: column nowrap;
+  max-height: 100vh;
+}
+
+main {
+  display: flex;
+  flex-flow: row nowrap;
+  overflow-y: hidden;
+  overflow-x: scroll
+}
+
+main > .list-container > .list {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 300px;
+  max-height: 100%;
+}
+
+main > div > div > ul {
+  display: flex;
+  flex-flow: column;
+  overflow-y: scroll;
+}
