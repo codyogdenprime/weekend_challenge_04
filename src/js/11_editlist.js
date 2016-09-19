@@ -1,3 +1,7 @@
+console.log( "11_editlist.js sourced" );
+
+// Handles the PUT for editing the list title.
+
 var editList = function() {
 
 	console.log( "This data:", $( this ).data() );
@@ -6,7 +10,7 @@ var editList = function() {
 
 	var listId = $( this ).data('id');
 
-	var ajUrl = String( '/list/' + listId );
+	var ajUrl = String( '/list/' + listId ); // The listId is passed as a parameter
 
 	$.ajax({
 		url: ajUrl,

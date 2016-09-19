@@ -1,3 +1,13 @@
+// Comments? Uh...It makes the major wireframe...
+
+// That's all I got. Lots of flexbox and bad practice selectors
+
+// I'm better than this, but I wanted it done quickly
+
+// I might refactor
+
+// We'll see...
+
 body {
   display: flex;
   flex-flow: column nowrap;
@@ -8,7 +18,7 @@ main {
   display: flex;
   flex-flow: row nowrap;
   overflow-y: hidden;
-  overflow-x: scroll
+  overflow-x: scroll;
 }
 
 main > .list-container > .list {
@@ -22,4 +32,16 @@ main > div > div > ul {
   display: flex;
   flex-flow: column;
   overflow-y: scroll;
+}
+
+header {
+  color: #FAFAFA;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  height: 2.5em !important;
+  flex: 0 0 2.5em;
+  font-size: 1.75em;
+  font-family: 'Yellowtail', cursive;
 }

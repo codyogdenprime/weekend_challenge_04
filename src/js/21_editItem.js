@@ -1,3 +1,7 @@
+console.log( "21_editItem.js sourced" );
+
+// PUT request handler for content of items that already exist in the DB
+
 var editItem = function() {
 
 	console.log( 'edit item', $( this ).closest( '.list' ).data('id') );

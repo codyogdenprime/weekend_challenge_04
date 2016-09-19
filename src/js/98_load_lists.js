@@ -1,5 +1,7 @@
 console.log( "98_load_lists.js sourced" );
 
+// Well...it loads all the lists from the database and puts them on the DOM
+
 var loadLists = function() {
 
 	$.ajax({

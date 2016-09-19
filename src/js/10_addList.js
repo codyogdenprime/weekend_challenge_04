@@ -1,5 +1,7 @@
 console.log( "01_add_item.js sourced" );
 
+// POST /list to add a list to the Database
+
 var addList = function() {
 
 	var listName = $('.input-new-list');

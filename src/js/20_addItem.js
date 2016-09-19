@@ -1,3 +1,9 @@
+console.log( "20_addItem.js sourced" );
+
+// Adds an item to the list
+// Checks to see if the added item is an image url
+// Appends an image if it is
+
 var addItem = function() {
 
 	console.log( "Add Item:", $( this ) );
@@ -25,15 +31,7 @@ var addItem = function() {
 
 			$('#' + listId).append( genItem( data ) );
 
-			//refreshList( listId );
-			
-			imageExists( imgurl, function( isImage ) {
-
-				var img = $('<img />', { class: 'preview-image' }).attr( 'src', imgurl );
-
-				img.insertAfter( '#' + data[0].id );
-
-			});
+			refreshList( listId );
 
 		}
 	});

@@ -1,3 +1,9 @@
+console.log( "03_genItem.js sourced" );
+
+// Creates a jQuery element for each item
+
+// Returns those elements in an array
+
 var genItem = function( items ) {
 
 	var itemsArr = [];

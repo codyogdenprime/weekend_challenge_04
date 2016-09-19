@@ -2,6 +2,8 @@ console.log( "02_genList.js sourced" );
 
 /*
 
+This loads any list and its items to the DOM.
+
 
 HTML Output:
 
@@ -54,16 +56,6 @@ var genList = function ( data ) {
 
 		var newItemInput = $( '<input />', { class: 'new-item-input', data: data[i] }).attr( 'placeholder', 'Add new item...' );
 
-		var imgurl = data[i].content;
-
-		imageExists( imgurl, function( isImage ) {
-
-			var img = $('<img />', { class: 'preview-image' }).attr( 'src', imgurl );
-
-			img.insertAfter( newItemInput );
-
-		});
-
 		listTitle.append( [ listTitleInput, listMenu ] );
 
 		listDiv.append( listTitle );
@@ -83,5 +75,7 @@ var genList = function ( data ) {
 	}
 
 	lists.insertBefore( '.list-container.add-list' );
+
+	findImages();
 
 };

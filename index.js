@@ -1,3 +1,25 @@
+/*
+
+ __          __     _____  _   _ _____ _   _  _____ 
+ \ \        / /\   |  __ \| \ | |_   _| \ | |/ ____|
+  \ \  /\  / /  \  | |__) |  \| | | | |  \| | |  __ 
+   \ \/  \/ / /\ \ |  _  /| . ` | | | | . ` | | |_ |
+    \  /\  / ____ \| | \ \| |\  |_| |_| |\  | |__| |
+     \/  \/_/    \_\_|  \_\_| \_|_____|_| \_|\_____|
+                                                    
+	There are lots of working routes (I was bored),
+	but not all of them are actively usedin the app.
+
+	There is an Archive View and Trash View (and
+	associated routes) that were planned but I ran
+	out of time to complete them.
+
+	All the routes have a comment explaining ( kinda )
+	what they do.
+
+*/
+
+// Hello ES6
 'use strict';
 // File Path
 const filepath = require('path');
@@ -427,7 +449,7 @@ items.route( '/complete' )
 
 		if( err ) tossErr( err, "PUT /list/:id/items/complete failed." );
 
-		res.redirect( '/list' );
+		res.send( result.rows );
 
 	} );
 
