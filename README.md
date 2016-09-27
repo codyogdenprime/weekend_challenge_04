@@ -20,7 +20,7 @@ CREATE TABLE "public"."list" (
 ```
 ### Items Table
 ```sql
-CREATE TABLE "public"."list" (
+CREATE TABLE "public"."item" (
     "id" serial,
     "content" text,
     "status" int,
