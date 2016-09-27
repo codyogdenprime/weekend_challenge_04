@@ -67,7 +67,7 @@ app.use( ( req, res, next ) => {
 // PostgreSQL Setup
 const pg_config = {
 	host: 'localhost',
-	database: 'checklist'
+	database: 'mello'
 };
 const Pool = require('pg').Pool;
 const pool = new Pool( pg_config );
