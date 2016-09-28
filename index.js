@@ -16,6 +16,10 @@
 
 	All the routes have a comment explaining ( kinda )
 	what they do.
+	
+	Also we had not learned how to put routes inside modules yet.
+	
+	I will clean this up later.
 
 */
 
