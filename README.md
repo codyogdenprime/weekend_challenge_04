@@ -4,7 +4,7 @@ A fake Trello created for a homework assignment.
 
 ## Install Instructions
 
-Create a Postgres database named `mello.'
+Create a Postgres database named `mello`.
 
 Run the following SQL commands to setup the tables:
 
