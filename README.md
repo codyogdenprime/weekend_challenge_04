@@ -2,7 +2,7 @@
 
 A fake Trello created for a homework assignment.
 
-## Instal Instructions
+## Install Instructions
 
 Create a Postgres database named `mello.'
 
